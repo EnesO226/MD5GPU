@@ -3,9 +3,6 @@
 #include "device_launch_parameters.h"
 #include <Windows.h>
 #include <stdio.h>
-#ifdef __INTELLISENSE__
-#include "intellisense_cuda_intrinsics.h"
-#endif
 #define uint uint32_t
 #define uchar uint8_t
 
@@ -181,7 +178,6 @@ __device__ void md5(const uchar* data, const uint size, uint result[4])
 	transform(state, buffer);
 
 	memcpy(result, state, 4 * sizeof(uint));
-	atomicAdd(&totalhashes, 1);
 	if (result[0] == 0x00000000 && byteswap(result[1]) < 0xffffffff) {
 		count++;
 		printf("Hash found -------> %08x%08x%08x%08x\n", byteswap(result[0]), byteswap(result[1]), byteswap(result[2]), byteswap(result[3]));
@@ -192,7 +188,6 @@ __device__ void md5(const uchar* data, const uint size, uint result[4])
 		
 		printf("\n");
 		printf("Total hashes -----> %llu\n", totalhashes);
-		printf("Hash number  -----> %u\n\n", count);
 	}
 }
 
